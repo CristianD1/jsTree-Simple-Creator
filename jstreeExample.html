@@ -1,0 +1,50 @@
+
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="jstreelib/themes/default-dark/style.min.css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<script src='jstreelib/jstree.min.js'></script>
+
+		<script src='jstreeCreator.js'></script>
+
+		<style>
+
+		.treeBox{
+			border: 1px solid black;
+			width: 45%;
+			height: 500px;
+			overflow: auto;
+		}
+
+		</style>
+
+
+	</head>
+
+	<body>
+
+
+		<span>
+
+			<div class="treeBox" style="float:left;">
+
+				<input type="text" id="treeBoxSearch" style="border:1px solid silver; border-radius:4px; width:100%;" placeholder="Search...">
+				<div id="treeBox"></div>
+
+				<script>
+
+					// This is an example initialization
+					var treeObj = new jstreeCreator("treeBox", "example", "open", "treeBoxSearch", true);
+
+					// set the contents to your 2D array
+					treeObj.initTree();
+
+				</script>
+			</div>
+
+		</span>
+
+
+	</body>
+</html>
