@@ -1,7 +1,7 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="jstreelib/themes/default-dark/style.min.css">
+		<link rel="stylesheet" type="text/css" href="jstreelib/themes/default/style.min.css">
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 		<script src='jstreelib/jstree.min.js'></script>
@@ -35,10 +35,33 @@
 				<script>
 
 					// This is an example initialization
-					var treeObj = new jstreeCreator("treeBox", "example", "open", "treeBoxSearch", true);
+					var treeObj = new jstreeCreator("treeBox", "example", "close", "treeBoxSearch", true);
 
-					// set the contents to your 2D array
+					// Simply initialize the default generated tree
 					treeObj.initTree();
+
+				</script>
+			</div>
+
+			<div class="treeBox" style="float:left;">
+
+				<input type="text" id="treeBoxSearch2" style="border:1px solid silver; border-radius:4px; width:100%;" placeholder="Search...">
+				<div id="treeBox2"></div>
+
+				<script>
+
+					// This is an example initialization
+					var friendObj = new jstreeCreator("treeBox2", "friendshipTree", "open", "treeBoxSearch2", true);
+
+					// Set the contents of your 2D array
+					//		-> this can be a record set created from a database query
+					var tempArr =  [['friend','companion','prankster'],
+									['friend','companion','serious guy'],
+									['friend','best friend','relaxed'],
+									['enemy','bully','aggressive'],
+									['enemy','rival', '']];
+					friendObj.contentSet.contentArr = tempArr;
+					friendObj.initTree();
 
 				</script>
 			</div>

@@ -14,7 +14,7 @@ function jstreeCreator(treeBox, treeType, nodeState, searchBar, multipleSelect, 
 
 	// storage for the result settings
 	this.contentSet = {
-			treeType : 'example',
+			treeType : (typeof treeType === 'string')?treeType:'example',
 			contentArr : [],
 			parentIconLink : "",
 			leafIconLink : "",
@@ -37,7 +37,7 @@ function jstreeCreator(treeBox, treeType, nodeState, searchBar, multipleSelect, 
 	// initialize the tree in the element: treeBoxID 
 	this.initTree = function(){
 
-		if(self.contentSet.treeType == 'example'){
+		if(self.contentSet.treeType === 'example'){
 			self.contentSet.contentArr = [['a','b','c'],['a','d',''],['e','f',''],['e','f','g']];
 		}
 
@@ -319,10 +319,6 @@ function twoDArrToTree(contentSet){
 				}else{
 					iconLink = contentSet.parentIconLink;
 				}
-				// Custom iconlink for transits
-				if(contentSet.contentArr[row][col].indexOf("_Transit_Dept_") != -1){
-					iconLink = contentSet.leafIconLink;
-				}
 				var jt = '{"icon":"'+iconLink+'"}';
 
 
@@ -340,26 +336,7 @@ function twoDArrToTree(contentSet){
 				var displayName = contentSet.contentArr[row][col];
 
 				// Determine node name settings given the type of tree requested
-				if(contentSet.treeType == "Dept" || contentSet.treeType == "HRDept"){
-					if(contentSet.addDepth){
-						id = "d"+currDepth+"n"+"_"+itemID
-					}else{
-						id = itemID;
-					}
-					itemName = (contentSet.contentArr[row][col] in orgUnitToName)?orgUnitToName[contentSet.contentArr[row][col]]:contentSet.contentArr[row][col];
-					displayName = (displayName in orgUnitToName)?orgUnitToName[displayName]:displayName;
-
-					if(displayName.indexOf("_Transit_") != -1){
-						displayName = displayName.substring(0, displayName.indexOf("_Transit_"));
-					}
-
-					// Initialize this depth
-					if($.inArray(currDepth, depDepths) == -1){depDepths.push(currDepth);}
-				}else{
-					id = row+"_"+col+"_"+itemID;
-				}
-
-				displayName = (contentSet.treeType == "location" && currDepth == 5)?"Floor: "+displayName:displayName;
+				id = row+"_"+col+"_"+itemID;
 
 				// Define the node and add it to the tree
 				resultString += "<li id='"+id+"' data-jstree='"+jt+"' name='"+itemName+"' data-nodedepth='"+currDepth+"'>"+displayName+"<ul>";
@@ -374,12 +351,6 @@ function twoDArrToTree(contentSet){
 		prevDepth = currDepth;
 	}
 	resultString += "</ul>";
-
-
-	// Sort and remove duplicates from our depth arrays
-	locDepths.sort(function(a, b){return a - b;});
-	depDepths.sort(function(a, b){return a - b;});
-
 
 	return resultString;
 
@@ -407,7 +378,7 @@ function customTreeReplace(str){ return str.replace(/[ &\/°"§%()\[\]{}=\\?´`'
 // Uses a given array of selected information departments (selectedList)
 //		and the original pseudo tree array to resolve to a list of node paths
 //		Then initializes the newly created tree using the resolved paths only
-function getNodePathsFromArr(previewID, infoArr, selectedList, maxLength){
+function getNodePathsFromArr(previewID, infoArr, unchangedArr, selectedList, maxLength){
 
 	var prevFoundList = [];
 	var foundRows = [];
@@ -463,8 +434,8 @@ function getNodePathsFromArr(previewID, infoArr, selectedList, maxLength){
 		for(var i = 0; i < foundRows.length; ++i){
 			var num = foundRows[i];
 			var tempA = [];
-			for(var col = 0; col < unchangedHRDeptJSArr[num].length; ++col){
-				tempA.push(unchangedHRDeptJSArr[num][col]);
+			for(var col = 0; col < unchangedArr[num].length; ++col){
+				tempA.push(unchangedArr[num][col]);
 			}
 			allPathsList.push(tempA);
 		}
@@ -476,7 +447,7 @@ function getNodePathsFromArr(previewID, infoArr, selectedList, maxLength){
 	var resultTree = twoDArrToTree( allPathsList, "images/treeDepartment.png", "images/treeTransit.png", false, numCols, "department" );
 	
 
-	InitializeDisplayTree(treeviewHRDep, resultTree);
+	InitializeDisplayTree(previewID, resultTree);
 }
 
 // Uses a given tree and list of selected items to resolve to a list of
@@ -561,7 +532,7 @@ var depDepths = [];
 
 function openCloseBtn(treeID, action){
 	// Depending on the treeID passed in, set the respective tree depth array
-	var depthArr = (treeID == treeviewLoc) ? locDepths : depDepths;
+	var depthArr = treeDepths;
 
 	if(action == "open"){
 		// Sort ascending
