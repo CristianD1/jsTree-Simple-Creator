@@ -1,5 +1,5 @@
 # jsTree-Simple-Creator
-Easy JSTree Creation and manipulation kit
+###Easy JSTree Creation and manipulation kit
 
 JSTree is an epic library, but a bit difficult for beginner programmers.
 This repo aims to create a simple method of initializing x number of trees.
@@ -20,3 +20,34 @@ var treeObj = new jstreeCreator("treeBox", "example", "open", "treeBoxSearch", t
 // Initialize and draw your tree
 treeObj.initTree();
 ```
+
+Given some database table that returns an array akin to:
+```
+[['friend','companion','prankster'],
+ ['friend','companion','serious guy'],
+ ['friend','best friend','relaxed'],
+ ['enemy','bully','aggressive'],
+ ['enemy','rival', '']]
+```
+
+Assuming we store that array in 'tempArr', we can easily initialize it with:
+```html
+<input type="text" id="treeBoxSearch" placeholder="Search...">
+<div id="treeBox"></div>
+
+<script>
+
+    // Initialize object to store our tree info
+	var friendObj = new jstreeCreator("treeBox", "friendshipTree", "open", "treeBoxSearch2", true);
+
+    // Set the objects display content
+	friendObj.contentSet.contentArr = tempArr;
+	// Initialize our tree
+	friendObj.initTree();
+
+</script>
+```
+
+will show up as:
+
+![Alt text](/screens/level7.png "Title")
