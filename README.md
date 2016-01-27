@@ -50,4 +50,4 @@ Assuming we store that array in 'tempArr', we can easily initialize it with:
 
 will show up as:
 
-![Alt text](/readmeimgs/exampletree.png "Title")
+![Alt text](/readmeImgs/exampletree.png "Title")
